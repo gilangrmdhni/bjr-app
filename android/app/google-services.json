@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "164142605575",
+    "project_id": "berani-jual-rugi-81cc4",
+    "storage_bucket": "berani-jual-rugi-81cc4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164142605575:android:196e58713427b8b26c91a2",
+        "android_client_info": {
+          "package_name": "om.example.jual_rugi_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANZEibuDD2kzMtTvizi8yJKZFEh9sqGLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
