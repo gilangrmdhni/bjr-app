@@ -22,5 +22,9 @@ class AppRoutes {
   static const failurePayment = '/failure-payment';
   // product details
   static const comparePage = '/compare_page';
+
+  // setting account 
+  static const String MyAccountView = '/my_account_view';
+  static const String ShippingAddressView = '/ship_address_view';
   
 }

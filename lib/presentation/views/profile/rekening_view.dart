@@ -12,17 +12,11 @@ class MainView extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Profil Akunmu',
+              'Profile Akunmu',
               style: TextStyle(color: Colors.grey.shade800),
             ),
             backgroundColor: Colors.white,
             elevation: 0,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.grey.shade800),
-              onPressed: () {
-                Get.back();
-              },
-            ),
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -38,75 +32,66 @@ class MainView extends StatelessWidget {
                             AssetImage('assets/images/content/user.png'),
                       ),
                       SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                if (authController.currentUser.value == null) {
-                                  Get.toNamed('/login_view');
-                                } else {
-                                  // Additional action if needed
-                                }
-                              },
-                              child: Text(
-                                authController.currentUser.value != null
-                                    ? authController.currentUser.value!.username
-                                    : 'Silahkan Login',
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              // Aksi ketika teks "Silahkan Login" ditekan
+                              if (authController.currentUser.value == null) {
+                                // Navigasi ke halaman login jika pengguna belum login
+                                Get.toNamed('/login_view');
+                              } else {
+                                // Aksi lain yang ingin Anda lakukan ketika teks lainnya ditekan
+                              }
+                            },
+                            child: Text(
+                              authController.currentUser.value != null
+                                  ? authController.currentUser.value!.username
+                                  : 'Silahkan Login',
+                              style: TextStyle(
+                                fontSize: 22,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(
-                              authController.currentUser.value != null
-                                  ? authController.currentUser.value!.email
-                                  : '',
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
-                            ),
-                          ],
-                        ),
+                          ),
+                          Text(
+                            authController.currentUser.value != null
+                                ? authController.currentUser.value!.email
+                                : '',
+                            style: TextStyle(fontSize: 18, color: Colors.grey),
+                          ),
+                        ],
                       ),
                       IconButton(
-                        icon: Icon(Iconsax.edit_2, color: Colors.black),
+                        icon: Icon(Iconsax.path, color: Colors.black),
                         onPressed: () {
-                          // Edit action
+                          // Aksi ketika tombol edit ditekan
                         },
                       ),
                     ],
                   ),
                   SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildInfoCard(
-                        context,
-                        icon: Iconsax.coin,
-                        label: 'Point',
-                        value: '56.000',
-                      ),
-                      _buildInfoCard(
-                        context,
-                        icon: Iconsax.wallet_2,
-                        label: 'Saldo',
-                        value: 'Rp. 156.000',
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () async {
+                      // Pengecekan status login
                       if (authController.currentUser.value == null) {
+                        // Jika belum login, arahkan ke halaman login
                         Get.toNamed('/login_view');
                       } else {
+                        // Ambil data user dari controller
                         UserModel user = authController.currentUser.value!;
+
+                        // Log nilai isStore
+                        print('Is Store: ${user.isStore}');
+
+                        // Pengecekan apakah user memiliki toko
                         if (user.isStore) {
+                          // Jika toko sudah dibuat, arahkan ke halaman store_view
                           Get.toNamed('/store_view');
                         } else {
+                          // Jika toko belum dibuat, arahkan ke halaman store_name_input
                           Get.toNamed('/store_name_input');
                         }
                       }
@@ -114,9 +99,11 @@ class MainView extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       primary: Colors.grey.shade300,
                       padding: EdgeInsets.all(14),
-                      minimumSize: Size(double.infinity, 40),
+                      minimumSize:
+                          Size(double.infinity, 40), // Atur tinggi tombol
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius:
+                            BorderRadius.circular(16), // Atur border radius
                       ),
                       elevation: 0,
                     ),
@@ -144,50 +131,78 @@ class MainView extends StatelessWidget {
                       ],
                     ),
                   ),
+
                   SizedBox(height: 24),
-                  _buildSectionTitle('Setting Akun'),
-                  buildMenuItem(Iconsax.profile_circle, 'Akun saya', () {
-                    Get.toNamed('/my_account_view');
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.0), // Sesuaikan nilai padding sesuai kebutuhan
+                    child: Text(
+                      'Setting Akun',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ),
+                  buildMenuItem(Iconsax.profile_circle, 'Akun Saya', () {
+                    // Aksi untuk menavigasi ke layar pesanan
                   }, true),
-                  buildMenuItem(Iconsax.location, 'Alamat Pengiriman', () {
-                     Get.toNamed('/ship_address_view');
+                  buildMenuItem(Iconsax.location, 'Alamat pengiriman', () {
+                    // Aksi untuk menavigasi ke layar daftar keinginan
                   }, true),
                   buildMenuItem(Iconsax.call, 'Nomor Telepon', () {
-                    // Navigate to phone settings
+                    // Aksi untuk menavigasi ke layar saldo
                   }, true),
                   buildMenuItem(Iconsax.directbox_default, 'E-mail', () {
-                    // Navigate to email settings
+                    // Aksi untuk menavigasi ke layar alamat pengiriman
                   }, true),
                   buildMenuItem(Iconsax.receipt_edit, 'Pengaturan Pembayaran',
                       () {
-                    // Navigate to payment settings
+                    // Aksi untuk menavigasi ke layar alamat pengiriman
                   }, true),
-                  buildMenuItem(Iconsax.receipt, 'Rekening Bank', () {
-                    // Navigate to bank settings
+                  buildMenuItem(Iconsax.receipt_edit, 'Rekening Bank', () {
+                    // Aksi untuk menavigasi ke layar alamat pengiriman
                   }, true),
-                  Divider(color: Colors.grey, height: 2),
+                  Divider(
+                    color: Colors.grey,
+                    height: 2,
+                  ),
                   SizedBox(height: 16),
-                  _buildSectionTitle('Etalase'),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: 8.0), // Sesuaikan nilai padding sesuai kebutuhan
+                    child: Text(
+                      'Etalase',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ),
                   buildMenuItem(Iconsax.money, 'Transaksi Penjualan', () {
-                    // Navigate to sales transactions
-                  }, true),
+                    // Aksi untuk menavigasi ke layar pesanan
+                  }, true), // Tambahkan parameter true pada item ini
                   buildMenuItem(Icons.format_list_bulleted_add, 'Tambah Barang',
                       () {
-                    // Navigate to add item
+                    // Aksi untuk menavigasi ke layar daftar keinginan
                   }, true),
                   buildMenuItem(Icons.format_list_numbered, 'Barang Dijual',
                       () {
-                    // Navigate to items for sale
+                    // Aksi untuk menavigasi ke layar saldo
                   }, true),
                   buildMenuItem(Iconsax.directbox_default, 'Tidak Dijual', () {
-                    // Navigate to not for sale items
+                    // Aksi untuk menavigasi ke layar alamat pengiriman
                   }, true),
                   buildMenuItem(Icons.archive_outlined, 'Draft', () {
-                    // Navigate to drafts
+                    // Aksi untuk menavigasi ke layar alamat pengiriman
                   }, true),
-                  Divider(color: Colors.grey, height: 2),
+                  Divider(
+                    color: Colors.grey,
+                    height: 2,
+                  ),
                   SizedBox(height: 16),
                   buildMenuItems(Iconsax.logout, 'Sign Out', () {
+                    // Panggil fungsi logout pada AuthController
                     authController.logout();
                   }),
                 ],
@@ -199,50 +214,6 @@ class MainView extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCard(BuildContext context,
-      {required IconData icon, required String label, required String value}) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(icon, color: Colors.grey.shade600, size: 24),
-                SizedBox(width: 8),
-                Text(label,
-                    style:
-                        TextStyle(fontSize: 16, color: Colors.grey.shade600)),
-              ],
-            ),
-            SizedBox(height: 8),
-            Text(value,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: EdgeInsets.only(left: 8.0),
-      child: Text(
-        title,
-        style: TextStyle(
-            fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
-      ),
-    );
-  }
-
   Widget buildMenuItem(
       IconData icon, String label, Function onTap, bool hasArrow) {
     return ListTile(
@@ -250,8 +221,10 @@ class MainView extends StatelessWidget {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: TextStyle(fontSize: 18, color: Colors.grey.shade600)),
+          Text(
+            label,
+            style: TextStyle(fontSize: 18, color: Colors.grey.shade600),
+          ),
           if (hasArrow)
             Icon(Icons.arrow_forward_ios,
                 size: 18, color: Colors.grey.shade600),
@@ -266,7 +239,7 @@ class MainView extends StatelessWidget {
       leading: Icon(icon, size: 28, color: Colors.red),
       title: Text(
         label,
-        style: TextStyle(fontSize: 18, color: Colors.red),
+        style: TextStyle(fontSize: 18, color: Colors.red), // Warna teks merah
       ),
       onTap: onTap as void Function()?,
     );

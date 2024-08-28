@@ -2,10 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jual_rugi_app/app_routes.dart';
+import 'package:jual_rugi_app/core/usecases/address/add_shipping_address.dart';
+import 'package:jual_rugi_app/core/usecases/address/get_shipping_addresses.dart';
+import 'package:jual_rugi_app/core/usecases/address/update_shipping_address.dart';
 import 'package:jual_rugi_app/core/usecases/auth_usecase_impl.dart';
 import 'package:jual_rugi_app/data/api/auth_api.dart';
 import 'package:jual_rugi_app/data/repositories/auth_repository_impl.dart';
+import 'package:jual_rugi_app/data/repositories/shipping_address_repository.dart';
 import 'package:jual_rugi_app/presentation/controllers/auth_controller.dart';
+import 'package:jual_rugi_app/presentation/controllers/shipping_address_controller.dart';
 import 'package:jual_rugi_app/presentation/controllers/store_controller.dart';
 import 'package:jual_rugi_app/presentation/views/auth/login_view.dart';
 import 'package:jual_rugi_app/presentation/views/auth/otp_verification_view.dart';
@@ -14,6 +19,8 @@ import 'package:jual_rugi_app/presentation/views/create_product.dart';
 import 'package:jual_rugi_app/presentation/views/home_view.dart';
 import 'package:jual_rugi_app/presentation/views/notification_view.dart';
 import 'package:jual_rugi_app/presentation/views/profile/main_view.dart';
+import 'package:jual_rugi_app/presentation/views/profile/my_account_view.dart';
+import 'package:jual_rugi_app/presentation/views/profile/shipping_address_view.dart';
 import 'package:jual_rugi_app/presentation/views/store/store_main_view.dart';
 import 'package:jual_rugi_app/presentation/views/store/store_name_input_view.dart';
 import 'package:jual_rugi_app/presentation/views/transaction/failure_payment_view.dart';
@@ -43,6 +50,15 @@ class MyApp extends StatelessWidget {
     ),
   );
   final DynamicLinkHandler dynamicLinkHandler = DynamicLinkHandler();
+  final ShippingAddressController shippingAddressController = Get.put(
+    ShippingAddressController(
+      getShippingAddresses:
+          GetShippingAddresses(ShippingAddressRepositoryImpl()),
+      addShippingAddress: AddShippingAddress(ShippingAddressRepositoryImpl()),
+      updateShippingAddress:
+          UpdateShippingAddress(ShippingAddressRepositoryImpl()),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +91,12 @@ class MyApp extends StatelessWidget {
         GetPage(name: AppRoutes.createProduct, page: () => CreateProductView()),
         // product details
         GetPage(name: AppRoutes.comparePage, page: () => ComparePage()),
+
+        // setting account
+        GetPage(name: AppRoutes.MyAccountView, page: () => MyAccountView()),
+        GetPage(
+            name: AppRoutes.ShippingAddressView,
+            page: () => ShippingAddressView()),
       ],
       home: Scaffold(
         body: Obx(() => navigationController
